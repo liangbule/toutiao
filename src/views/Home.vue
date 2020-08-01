@@ -9,13 +9,13 @@
     <!-- content开始 -->
     <div class="toutiao-content">
         <div class="toutiao-left">
-          <Navigation />
+          <Navigation></Navigation>
         </div>
         <div class="toutiao-middle">
-          <MiddleContent />
+          <MiddleContent></MiddleContent>
         </div>
         <div class="toutiao-right">
-          <RightContent />
+          <RightContent></RightContent>
         </div>
     </div>
   </div>
@@ -90,6 +90,7 @@ export default {
 
   .toutiao-right {
     flex: 2;
+    margin-left: 15px;
   }
 }
 </style>

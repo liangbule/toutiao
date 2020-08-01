@@ -6,6 +6,10 @@ import App from './App.vue'
 import router from './router'
 // 引入 vux
 import store from './store'
+// 引入axios
+import axios from './common/axios'
+// 在vue原型上添加axios
+Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false
 
