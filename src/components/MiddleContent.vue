@@ -2,18 +2,20 @@
 <template>
   <div class="toutiao_content">
     <div class="content_bar">
-      <span>发微头条</span>
-      <span>写文章</span>
-      <span>题问题</span>
-      <span>发视频</span>
+      <span v-for="(item,index) in apanList" 
+      @click="spanbut(item.type)" 
+      :class="{'active_span':activeTab === item.type}" :key="index">{{ item.conten }}</span>
     </div>
     <div class="constent_text">
-      <textarea name id placeholder="视频标题（30 字以内）" cols="30" rows="10"></textarea>
+      <textarea v-model="contentTt" v-show="activeTab === 'tt' " name id placeholder="发布微头条（30 字以内）" cols="30" rows="10"></textarea>
+      <textarea v-model="contentXx" v-show="activeTab === 'xx' " name id placeholder="发布文章（30 字以内）" cols="30" rows="10"></textarea>
+      <textarea v-model="contentWw" v-show="activeTab === 'ww' " name id placeholder="提出问题（30 字以内）" cols="30" rows="10"></textarea>
+      <textarea v-model="contentFf" v-show="activeTab === 'ff' " name id placeholder="发视频（30 字以内）" cols="30" rows="10"></textarea>
     </div>
     <div class="content_foo">
       <span>图片</span>
       <span>表情</span>
-      <button>发布</button>
+      <button @click.stop="release">发布</button>
     </div>
   </div>
 </template>
@@ -23,19 +25,55 @@
 //例如：import 《组件名称》 from '《组件路径》';
 
 export default {
-  name: "ss",
+  name:'ss',
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      apanList:[
+        {id:1,conten:"发微头条",type:"tt"},
+        {id:2,conten:"写文章",type:"xx"},
+        {id:3,conten:"提问题",type:"ww"},       
+        {id:4,conten:"发视频",type:"ff"},
+      ],
+      activeTab:"tt",
+      contentTt:"",
+      contentXx:"",
+      contentWw:"",
+      contentFf:"",
+    }
   },
   //监听属性 类似于data概念
   computed: {},
   //监控data中的数据变化
   watch: {},
   //方法集合
-  methods: {},
+  methods: {
+    //oauth_token:OGQ3OYzUtwl6wUZZQSIMh37juTJclzru
+    spanbut(activeTab){
+      this.activeTab = activeTab;
+      // console.log(index)
+      console.log(this.activeTab)
+    },
+    release(){
+      let contentTt = this.contentTt
+       if(!contentTt){ //内容为空时候 // true->false 
+        alert('请输入')
+        return false
+      }
+      this.$axios.post("/createTT",{
+        content:contentTt,
+        imgs:"",
+        // oauth_token:"OGQ3OYzUtwl6wUZZQSIMh37juTJclzru",
+      }).then(res=>{
+        console.log(res);
+      }).catch(err=>{
+        console.log(err);
+      })
+      this.contentTt = "";
+    }
+  },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
@@ -82,11 +120,18 @@ export default {
   .content_bar {
     width: 100%;
     height: 44px;
+    .active_span{
+      color: aquamarine;
+      border-bottom: 2px solid #f1545a;
+    }
     span {
+      display: inline-block;
+      height: 100%;
       line-height: 44px;
       font-size: 16px;
       margin-left: 19px;
       cursor: pointer;
+      transition: all 1s;
     }
   }
 
